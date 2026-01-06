@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Love Clock ❤️</title>
+
+<!-- PWA SETTINGS -->
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- MANIFEST LINK -->
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow-x: hidden;
+    background: url("background.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* PASSWORD SCREEN */
+#lockScreen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    padding: 12px;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    background: #ff2d55;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #e0244a;
+}
+
+/* MAIN PAGE */
+#content {
+    display: none;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 26px;
+    color: white;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+.counter {
+    font-size: 18px;
+    margin: 10px 0;
+    color: white;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+/* IMAGE ROW */
+.images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.card {
+    width: 120px;
+    color: white;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.plus {
+    font-size: 30px;
+    color: white;
+}
+
+/* MESSAGE */
+#loveMessage {
+    display: none;
+    margin-top: 20px;
+    font-size: 20px;
+    color: white;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+/* FLOATING HEARTS */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    color: red;
+    animation: float 6s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lockScreen">
+    <h2 style="color:white;">Private 💖</h2>
+    <input type="password" id="password" placeholder="Enter our password">
+    <button onclick="unlock()">Unlock</button>
+    <p id="error" style="color:red;"></p>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="content">
+    <h1>Maikon ❤️ Analiah</h1>
+
+    <div class="counter" id="timeCounter"></div>
+    <div class="counter" id="anniversaryMsg"></div>
+
+    <div class="images">
+        <div class="card">
+            <strong>Maikon</strong>
+            <img src="me.jpg">
+        </div>
+
+        <div class="plus">+</div>
+
+        <div class="card">
+            <strong>Analiah</strong>
+            <img src="her.jpg">
+        </div>
+    </div>
+
+    <button onclick="showLove()">hey pretty face click me 🥺</button>
+
+    <div id="loveMessage">
+        You mean the world to me🥺.....<br>
+        I love you Analiah ❤️<br>
+        <br>
+        Every day with you is my favorite day. This little space is just a reminder that my heart chose you, and it keeps choosing you,again and again.
+    </div>
+</div>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const correctPassword = "Maikon and Analiah forever";
+const startDate = new Date("2025-11-08T00:00:00");
+
+function unlock() {
+    if (password.value === correctPassword) {
+        lockScreen.style.display = "none";
+        content.style.display = "block";
+        bgMusic.play().catch(()=>{});
+        startCounter();
+        hearts();
+    } else {
+        error.innerText = "Wrong password ml 💔";
+    }
+}
+
+function startCounter() {
+    setInterval(() => {
+        const now = new Date();
+        const diff = now - startDate;
+
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor(diff / 3600000) % 24;
+        const minutes = Math.floor(diff / 60000) % 60;
+
+        timeCounter.innerText =
+        `Together for ${days} days, ${hours} hours, ${minutes} minutes ❤️`;
+
+        anniversaryMsg.innerText =
+        now.getDate() === 8
+        ? "Our love began on this day and will live forever till the day our hearts stop beating for each other."
+        : "";
+    }, 1000);
+}
+
+function showLove() {
+    loveMessage.style.display = "block";
+}
+
+function hearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+
+        if (navigator.vibrate) {
+            navigator.vibrate([40, 60, 40, 120]); // heartbeat
+        }
+
+        setTimeout(() => heart.remove(), 6000);
+    }, 500);
+}
+</script>
+
+</body>
+</html>
